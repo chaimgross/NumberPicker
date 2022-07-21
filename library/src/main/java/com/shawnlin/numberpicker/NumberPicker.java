@@ -783,8 +783,8 @@ public class NumberPicker extends LinearLayout {
                 R.styleable.NumberPicker_np_selectedTextStrikeThru, mSelectedTextStrikeThru);
         mSelectedTextUnderline = attributes.getBoolean(
                 R.styleable.NumberPicker_np_selectedTextUnderline, mSelectedTextUnderline);
-        mSelectedTypeface = Typeface.create(attributes.getString(
-                R.styleable.NumberPicker_np_selectedTypeface), Typeface.NORMAL);
+        mSelectedTypeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/" + attributes.getString(
+                R.styleable.NumberPicker_np_selectedTypeface));
         mTextAlign = attributes.getInt(R.styleable.NumberPicker_np_textAlign, mTextAlign);
         mTextColor = attributes.getColor(R.styleable.NumberPicker_np_textColor, mTextColor);
         mTextSize = attributes.getDimension(R.styleable.NumberPicker_np_textSize,
@@ -793,8 +793,8 @@ public class NumberPicker extends LinearLayout {
                 R.styleable.NumberPicker_np_textStrikeThru, mTextStrikeThru);
         mTextUnderline = attributes.getBoolean(
                 R.styleable.NumberPicker_np_textUnderline, mTextUnderline);
-        mTypeface = Typeface.create(attributes.getString(R.styleable.NumberPicker_np_typeface),
-                Typeface.NORMAL);
+        mTypeface = Typeface.createFromAsset(getContext().getAssets(),
+                "fonts/" + attributes.getString(R.styleable.NumberPicker_np_typeface));
         mFormatter = stringToFormatter(attributes.getString(R.styleable.NumberPicker_np_formatter));
         mFadingEdgeEnabled = attributes.getBoolean(R.styleable.NumberPicker_np_fadingEdgeEnabled,
                 mFadingEdgeEnabled);
