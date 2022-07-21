@@ -37,6 +37,7 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -783,8 +784,16 @@ public class NumberPicker extends LinearLayout {
                 R.styleable.NumberPicker_np_selectedTextStrikeThru, mSelectedTextStrikeThru);
         mSelectedTextUnderline = attributes.getBoolean(
                 R.styleable.NumberPicker_np_selectedTextUnderline, mSelectedTextUnderline);
-        mSelectedTypeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/" + attributes.getString(
-                R.styleable.NumberPicker_np_selectedTypeface));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mSelectedTypeface =  attributes.getFont(R.styleable.NumberPicker_np_selected_fontfamily);
+        }
+        else {
+            TypedArray array = context.obtainStyledAttributes(defStyle, R.styleable.TextAppearance);
+            if (array.hasValue(R.styleable.NumberPicker_np_selected_fontfamily)) {
+                int fontId = array.getResourceId(R.styleable.NumberPicker_np_selected_fontfamily, -1);
+                mSelectedTypeface = ResourcesCompat.getFont(context, fontId);
+            }
+        }
         mTextAlign = attributes.getInt(R.styleable.NumberPicker_np_textAlign, mTextAlign);
         mTextColor = attributes.getColor(R.styleable.NumberPicker_np_textColor, mTextColor);
         mTextSize = attributes.getDimension(R.styleable.NumberPicker_np_textSize,
@@ -793,8 +802,16 @@ public class NumberPicker extends LinearLayout {
                 R.styleable.NumberPicker_np_textStrikeThru, mTextStrikeThru);
         mTextUnderline = attributes.getBoolean(
                 R.styleable.NumberPicker_np_textUnderline, mTextUnderline);
-        mTypeface = Typeface.createFromAsset(getContext().getAssets(),
-                "fonts/" + attributes.getString(R.styleable.NumberPicker_np_typeface));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mTypeface =  attributes.getFont(R.styleable.NumberPicker_np_fontfamily);
+        }
+        else {
+            TypedArray array = context.obtainStyledAttributes(defStyle, R.styleable.TextAppearance);
+            if (array.hasValue(R.styleable.NumberPicker_np_fontfamily)) {
+                int fontId = array.getResourceId(R.styleable.NumberPicker_np_fontfamily, -1);
+                mTypeface = ResourcesCompat.getFont(context, fontId);
+            }
+        }
         mFormatter = stringToFormatter(attributes.getString(R.styleable.NumberPicker_np_formatter));
         mFadingEdgeEnabled = attributes.getBoolean(R.styleable.NumberPicker_np_fadingEdgeEnabled,
                 mFadingEdgeEnabled);
