@@ -229,7 +229,7 @@ public class NumberPicker extends LinearLayout {
     /**
      * The text for showing the current value.
      */
-    final TextView mSelectedText;
+    public final TextView mSelectedText;
 
     /**
      * The center X position of the selected text.
