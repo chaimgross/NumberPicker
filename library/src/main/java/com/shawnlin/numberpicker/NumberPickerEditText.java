@@ -1,5 +1,7 @@
 package com.shawnlin.numberpicker;
 
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -27,8 +29,8 @@ import android.view.ViewConfiguration;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
@@ -45,12 +47,10 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import static java.lang.annotation.RetentionPolicy.SOURCE;
-
 /**
  * A widget that enables the user to select a number from a predefined range.
  */
-public class NumberPicker extends LinearLayout {
+public class NumberPickerEditText extends LinearLayout {
 
     @Retention(SOURCE)
     @IntDef({VERTICAL, HORIZONTAL})
@@ -229,7 +229,7 @@ public class NumberPicker extends LinearLayout {
     /**
      * The text for showing the current value.
      */
-    final TextView mSelectedText;
+    private final EditText mSelectedText;
 
     /**
      * The center X position of the selected text.
@@ -638,7 +638,7 @@ public class NumberPicker extends LinearLayout {
          * @param oldVal The previous value.
          * @param newVal The new value.
          */
-        void onValueChange(NumberPicker picker, int oldVal, int newVal);
+        void onValueChange(NumberPickerEditText picker, int oldVal, int newVal);
     }
 
     /**
@@ -680,7 +680,7 @@ public class NumberPicker extends LinearLayout {
          *                    {@link #SCROLL_STATE_TOUCH_SCROLL} or
          *                    {@link #SCROLL_STATE_IDLE}.
          */
-        public void onScrollStateChange(NumberPicker view, @ScrollState int scrollState);
+        public void onScrollStateChange(NumberPickerEditText view, @ScrollState int scrollState);
     }
 
     /**
@@ -702,7 +702,7 @@ public class NumberPicker extends LinearLayout {
      *
      * @param context The application environment.
      */
-    public NumberPicker(Context context) {
+    public NumberPickerEditText(Context context) {
         this(context, null);
     }
 
@@ -712,7 +712,7 @@ public class NumberPicker extends LinearLayout {
      * @param context The application environment.
      * @param attrs   A collection of attributes.
      */
-    public NumberPicker(Context context, AttributeSet attrs) {
+    public NumberPickerEditText(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
@@ -723,7 +723,7 @@ public class NumberPicker extends LinearLayout {
      * @param attrs    a collection of attributes.
      * @param defStyle The default style to apply to this view.
      */
-    public NumberPicker(Context context, AttributeSet attrs, int defStyle) {
+    public NumberPickerEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs);
         mContext = context;
         mNumberFormatter = NumberFormat.getInstance();
@@ -1467,24 +1467,24 @@ public class NumberPicker extends LinearLayout {
     /**
      * Set the current value for the number picker.
      * <p>
-     * If the argument is less than the {@link NumberPicker#getMinValue()} and
-     * {@link NumberPicker#getWrapSelectorWheel()} is <code>false</code> the
-     * current value is set to the {@link NumberPicker#getMinValue()} value.
+     * If the argument is less than the {@link NumberPickerEditText#getMinValue()} and
+     * {@link NumberPickerEditText#getWrapSelectorWheel()} is <code>false</code> the
+     * current value is set to the {@link NumberPickerEditText#getMinValue()} value.
      * </p>
      * <p>
-     * If the argument is less than the {@link NumberPicker#getMinValue()} and
-     * {@link NumberPicker#getWrapSelectorWheel()} is <code>true</code> the
-     * current value is set to the {@link NumberPicker#getMaxValue()} value.
+     * If the argument is less than the {@link NumberPickerEditText#getMinValue()} and
+     * {@link NumberPickerEditText#getWrapSelectorWheel()} is <code>true</code> the
+     * current value is set to the {@link NumberPickerEditText#getMaxValue()} value.
      * </p>
      * <p>
-     * If the argument is less than the {@link NumberPicker#getMaxValue()} and
-     * {@link NumberPicker#getWrapSelectorWheel()} is <code>false</code> the
-     * current value is set to the {@link NumberPicker#getMaxValue()} value.
+     * If the argument is less than the {@link NumberPickerEditText#getMaxValue()} and
+     * {@link NumberPickerEditText#getWrapSelectorWheel()} is <code>false</code> the
+     * current value is set to the {@link NumberPickerEditText#getMaxValue()} value.
      * </p>
      * <p>
-     * If the argument is less than the {@link NumberPicker#getMaxValue()} and
-     * {@link NumberPicker#getWrapSelectorWheel()} is <code>true</code> the
-     * current value is set to the {@link NumberPicker#getMinValue()} value.
+     * If the argument is less than the {@link NumberPickerEditText#getMaxValue()} and
+     * {@link NumberPickerEditText#getWrapSelectorWheel()} is <code>true</code> the
+     * current value is set to the {@link NumberPickerEditText#getMinValue()} value.
      * </p>
      *
      * @param value The current value.
@@ -1559,8 +1559,8 @@ public class NumberPicker extends LinearLayout {
 
     /**
      * Sets whether the selector wheel shown during flinging/scrolling should
-     * wrap around the {@link NumberPicker#getMinValue()} and
-     * {@link NumberPicker#getMaxValue()} values.
+     * wrap around the {@link NumberPickerEditText#getMinValue()} and
+     * {@link NumberPickerEditText#getMaxValue()} values.
      * <p>
      * By default if the range (max - min) is more than the number of items shown
      * on the selector wheel the selector wheel wrapping is enabled.
@@ -1976,7 +1976,7 @@ public class NumberPicker extends LinearLayout {
     @Override
     public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
         super.onInitializeAccessibilityEvent(event);
-        event.setClassName(NumberPicker.class.getName());
+        event.setClassName(NumberPickerEditText.class.getName());
         event.setScrollable(isScrollerEnabled());
         final int scroll = (mMinValue + mValue) * mSelectorElementSize;
         final int maxScroll = (mMaxValue - mMinValue) * mSelectorElementSize;
@@ -2585,7 +2585,7 @@ public class NumberPicker extends LinearLayout {
      */
     private static class SetSelectionCommand implements Runnable {
 
-        private final TextView mInputText;
+        private final EditText mInputText;
 
         private int mSelectionStart;
         private int mSelectionEnd;
@@ -2595,7 +2595,7 @@ public class NumberPicker extends LinearLayout {
          */
         private boolean mPosted;
 
-        SetSelectionCommand(TextView inputText) {
+        SetSelectionCommand(EditText inputText) {
             mInputText = inputText;
         }
 
@@ -2618,7 +2618,7 @@ public class NumberPicker extends LinearLayout {
         @Override
         public void run() {
             mPosted = false;
-            //mInputText.setSelection(mSelectionStart, mSelectionEnd);
+            mInputText.setSelection(mSelectionStart, mSelectionEnd);
         }
     }
 
